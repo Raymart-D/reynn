@@ -1,0 +1,81 @@
+/* filepath: /workspaces/reynn/src/styles/LoginPage.module.css */
+.container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 40px;
+    border: 3px solid #ffcc00; /* Bright yellow border for retro feel */
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ffcc00, #ff5733); /* Vibrant gradient background */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    font-family: 'Courier New', Courier, monospace; /* Retro font */
+    text-align: center;
+    color: #ffffff;
+}
+
+.container h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Retro text shadow */
+    font-weight: bold;
+}
+
+.container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.container input {
+    padding: 12px;
+    font-size: 16px;
+    border: 2px solid #ffffff;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #333333;
+    font-family: 'Courier New', Courier, monospace;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.container input:focus {
+    outline: none;
+    border-color: #ff5733;
+    box-shadow: 0 0 8px rgba(255, 87, 51, 0.8);
+}
+
+.container button {
+    padding: 12px;
+    font-size: 18px;
+    color: #ffffff;
+    background-color: #ff5733;
+    border: 2px solid #ffffff;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.container button:hover {
+    background-color: #c70039;
+    transform: scale(1.05);
+}
+
+.container p {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.container a {
+    color: #ffcc00;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.container a:hover {
+    text-decoration: underline;
+    color: #ffffff;
+}

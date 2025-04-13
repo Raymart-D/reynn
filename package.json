@@ -1,0 +1,28 @@
+{
+  "dependencies": {
+    "axios": "^1.8.4",
+    "nth-check": "^2.0.1",
+    "postcss": "^8.4.31",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-hook-form": "^7.55.0",
+    "react-router-dom": "^5.3.4",
+    "react-scripts": "^5.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "@types/css-modules": "^1.0.5",
+    "@types/react": "^19.1.1",
+    "@types/react-dom": "^19.1.2"
+  }
+}
