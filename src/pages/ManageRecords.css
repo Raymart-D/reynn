@@ -2,14 +2,16 @@
     display: flex;
     height: 100vh;
     font-family: Arial, sans-serif;
+    background-color: #FFF8E1; /* Light Yellow Background */
 }
 
 .sidebar {
     width: 300px;
-    background-color: #f4f4f4;
-    border-right: 1px solid #ccc;
+    background-color: #FFD700; /* Primary Yellow */
+    border-right: 1px solid #FFC107; /* Dark Yellow Border */
     padding: 10px;
     overflow-y: auto;
+    color: #000000; /* Black Text */
 }
 
 .folder-tree-item {
@@ -21,6 +23,13 @@
     cursor: pointer;
     display: flex;
     align-items: center;
+    padding: 5px;
+    border-radius: 5px;
+    color: #000000; /* Black Text */
+}
+
+.folder-tree-label:hover {
+    background-color: #FFC107; /* Dark Yellow Hover */
 }
 
 .folder-icon {
@@ -31,6 +40,8 @@
     flex: 1;
     padding: 20px;
     overflow-y: auto;
+    background-color: #FFF8E1; /* Light Yellow Background */
+    color: #000000; /* Black Text */
 }
 
 .folder-contents {
@@ -45,32 +56,48 @@
 .file-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 15px;
 }
 
 .folder-item,
 .file-item {
-    padding: 10px;
-    border: 1px solid #ccc;
+    padding: 15px;
+    border: 1px solid #FFC107; /* Dark Yellow Border */
     border-radius: 5px;
-    background-color: #fff;
+    background-color: #FFD700; /* Primary Yellow */
     cursor: pointer;
+    text-align: center;
+    width: 120px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #000000; /* Black Text */
+}
+
+.folder-item:hover,
+.file-item:hover {
+    background-color: #FFC107; /* Dark Yellow Hover */
 }
 
 .folder-actions {
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .input {
-    padding: 5px;
+    padding: 8px;
     margin-right: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #FFC107; /* Dark Yellow Border */
     border-radius: 5px;
+    width: 200px;
+    background-color: #FFF8E1; /* Light Yellow Background */
+    color: #000000; /* Black Text */
 }
 
 .button {
-    padding: 5px 10px;
-    background-color: #007bff;
+    padding: 8px 15px;
+    background-color: #4CAF50; /* Green Accent */
     color: white;
     border: none;
     border-radius: 5px;
@@ -78,5 +105,24 @@
 }
 
 .button:hover {
-    background-color: #0056b3;
+    background-color: #388E3C; /* Darker Green Hover */
+}
+
+h3,
+h4 {
+    margin-bottom: 15px;
+    color: #000000; /* Black Text */
+}
+
+.manage-records-button {
+    padding: 8px 15px;
+    background-color: #4CAF50; /* Green Accent */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.manage-records-button:hover {
+    background-color: #388E3C; /* Darker Green Hover */
 }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './ManageRecords.css'; // Import CSS for styling
+import styles from './ManageRecords.module.css';
 
 interface File {
     id: number;

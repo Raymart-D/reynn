@@ -1,47 +1,72 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Dashboard.css';
 
 const Dashboard: React.FC = () => {
+    const [activeMenu, setActiveMenu] = useState<string | null>(null);
+
+    const toggleMenu = (menu: string) => {
+        setActiveMenu(activeMenu === menu ? null : menu);
+    };
+
     return (
         <div className="dashboard">
-            {/* Header Section */}
-            <header className="dashboard-header">
-                <h1>RECORDS OFFICE MANAGEMENT SYSTEM</h1>
-            </header>
+            {/* Main Content */}
+            <div className="main-content">
+                <h2>Records Table</h2>
+                <div className="table-container">
+                    <div className="table-controls">
+                        <input type="text" placeholder="Search..." className="search-bar" />
+                        <button className="add-record-button">Add Records for Memorandum</button>
+                    </div>
+                    <table className="records-table">
+                        <thead>
+                            <tr>
+                                <th>Memo No.</th>
+                                <th>Date</th>
+                                <th>File Name</th>
+                                <th>Description</th>
+                                <th>Download</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>9</td>
+                                <td>2013</td>
+                                <td>Jared Windam</td>
+                                <td>Ton_Jacobo</td>
+                                <td><button className="download-button">⬇</button></td>
+                                <td>
+                                    <button className="action-button preview">Preview</button>
+                                    <button className="action-button edit">Edit</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div className="pagination">
+                        <button className="pagination-button">Previous</button>
+                        <button className="pagination-button">Next</button>
+                    </div>
+                </div>
+            </div>
 
-            {/* Body Section */}
-            <div className="dashboard-body">
-                <aside className="dashboard-sidebar">
-                    <h2 className="sidebar-title">Dashboard</h2>
-                    <nav>
-                        <ul>
-                            <li><a href="/dashboard/settings">Settings</a></li>
-                            <li><a href="/dashboard/reports">Reports</a></li>
-                            <li><a href="/dashboard/records">Manage Records</a></li> {/* Ensure this is correct */}
-                        </ul>
-                    </nav>
-                </aside>
-                <main className="dashboard-content">
-                    <h2>Welcome Back!</h2>
-                    <div className="dashboard-widgets">
-                        <div className="widget">
-                            <h3>Total Records</h3>
-                            <p>1,234</p>
-                        </div>
-                        <div className="widget">
-                            <h3>Pending Approvals</h3>
-                            <p>12</p>
-                        </div>
-                        <div className="widget">
-                            <h3>Recently Updated</h3>
-                            <p>5 records updated today</p>
+            {/* Sidebar */}
+            <div className="sidebar">
+                <h2>Dashboard</h2>
+                <div className="menu">
+                    <div className="menu-item" onClick={() => toggleMenu('records')}>
+                        Records
+                        <div className={`submenu ${activeMenu === 'records' ? 'open' : ''}`}>
+                            <a href="#">Memorandum</a>
+                            <a href="#">Communication for Administration</a>
+                            <a href="#">Communication for Students</a>
+                            <a href="#">Resolution</a>
+                            <a href="#">External Communication</a>
+                            <a href="#">Project Proposal</a>
+                            <a href="#">Student Practicum</a>
                         </div>
                     </div>
-                    <div className="dashboard-chart">
-                        <h3>Monthly Records Overview</h3>
-                        <div className="chart-placeholder">[Chart Goes Here]</div>
-                    </div>
-                </main>
+                </div>
             </div>
         </div>
     );
