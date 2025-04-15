@@ -17,7 +17,7 @@ const Dashboard: React.FC = () => {
                         <ul>
                             <li><a href="/dashboard/settings">Settings</a></li>
                             <li><a href="/dashboard/reports">Reports</a></li>
-                            <li><a href="/dashboard/records">Manage Records</a></li>
+                            <li><a href="/dashboard/records">Manage Records</a></li> {/* Ensure this is correct */}
                         </ul>
                     </nav>
                 </aside>
