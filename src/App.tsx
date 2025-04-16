@@ -1,9 +1,10 @@
 // filepath: /workspaces/reynn/src/App.tsx
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
+import RecordsManagement from './pages/RecordsManagement';
 import LoginPage from './pages/LoginPage';
 import SignUpPage from './pages/SignUpPage';
-import Dashboard from './pages/Dashboard';
 
 const App: React.FC = () => {
     return (
