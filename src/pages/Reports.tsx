@@ -2,9 +2,9 @@ import React from 'react';
 
 const Reports: React.FC = () => {
     return (
-        <div className="reports">
-            <h2>Reports</h2>
-            <p>View and generate reports here.</p>
+        <div>
+            <h1>Reports</h1>
+            <p>View reports here.</p>
         </div>
     );
 };

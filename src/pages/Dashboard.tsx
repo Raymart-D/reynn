@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './Dashboard.css';
 
 const Dashboard: React.FC = () => {
@@ -9,18 +8,10 @@ const Dashboard: React.FC = () => {
             <div className="sidebar">
                 <h2>Records Office</h2>
                 <nav>
-                    <Link to="/dashboard" className="nav-link">
-                        Dashboard
-                    </Link>
-                    <Link to="/dashboard/records-management" className="nav-link">
-                        Records Management
-                    </Link>
-                    <Link to="/dashboard/reports" className="nav-link">
-                        Reports
-                    </Link>
-                    <Link to="/dashboard/settings" className="nav-link">
-                        Settings
-                    </Link>
+                    <a href="/dashboard" className="nav-link">Dashboard</a>
+                    <a href="/dashboard/records-management" className="nav-link">Records Management</a>
+                    <a href="/dashboard/reports" className="nav-link">Reports</a>
+                    <a href="/dashboard/settings" className="nav-link">Settings</a>
                 </nav>
             </div>
 
