@@ -219,13 +219,29 @@
 .card h3 {
     font-size: 20px;
     font-weight: bold;
-    margin-bottom: 10px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Retro text shadow */
 }
 
 .card p {
-    font-size: 14px;
-    color: #ffffff; /* White Text */
+    font-size: 16px;
+}
+
+/* Main Dashboard Styling */
+.main-dashboard {
+    text-align: center;
+    padding: 20px;
+    color: #333;
+}
+
+.main-dashboard h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.main-dashboard p {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #555;
 }
 
 /* Buttons */
