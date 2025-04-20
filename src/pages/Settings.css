@@ -3,6 +3,45 @@
     font-family: Arial, sans-serif;
 }
 
+
+.settings {
+    padding: 20px;
+}
+
+.settings h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.settings form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.settings label {
+    font-weight: bold;
+}
+
+.settings input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.settings button {
+    padding: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.settings button:hover {
+    background-color: #2980b9;
+}
+
 /* General Dashboard Styling */
 .dashboard {
     display: flex;

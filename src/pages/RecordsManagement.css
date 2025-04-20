@@ -22,6 +22,32 @@
     color: #555;
 }
 
+/* Add Record Button */
+.add-record-button {
+    padding: 10px 15px;
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
+}
+
+.add-record-button:hover {
+    background-color: #16a085;
+}
+
+/* Add Record Form */
+.add-record-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
 /* Tabs Styling */
 .tabs {
     display: flex;
@@ -68,6 +94,7 @@
 .records-table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 10px;
 }
 
 .records-table th,

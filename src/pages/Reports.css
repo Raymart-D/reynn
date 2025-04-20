@@ -1,0 +1,38 @@
+.reports {
+    padding: 20px;
+}
+
+.reports h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.reports table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.reports th,
+.reports td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.reports th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.reports button {
+    padding: 5px 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.reports button:hover {
+    background-color: #2980b9;
+}
