@@ -1,6 +1,6 @@
 /* General Styling */
 .dashboard {
-    display: flex;
+    display: flex; /* Use Flexbox for layout */
     height: 100vh;
     font-family: 'Arial', sans-serif;
     background-color: #f8f9fa;
@@ -8,7 +8,7 @@
 
 /* Sidebar */
 .sidebar {
-    width: 200px;
+    width: 200px; /* Fixed width for the sidebar */
     background-color: #3498db;
     color: white;
     padding: 20px;
@@ -16,6 +16,7 @@
     height: 100%;
     top: 0;
     left: 0;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
 .sidebar h2 {
@@ -24,21 +25,26 @@
     text-align: center;
 }
 
-.nav-link {
-    display: block;
-    text-decoration: none;
-    color: white;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    background-color: #2980b9;
-    text-align: center;
-    cursor: pointer;
-    transition: background-color 0.3s;
+.sidebar .nav-link {
+    display: block; /* Ensure buttons take up full width */
+    width: calc(100% - 20px); /* Add padding to prevent buttons from touching the edges */
+    padding: 10px 15px; /* Adjust padding for a balanced look */
+    margin: 5px auto; /* Center the buttons and add spacing */
+    border-radius: 5px; /* Smooth corners */
+    background-color: #2980b9; /* Button background color */
+    color: white; /* Button text color */
+    text-align: center; /* Center the text */
+    font-size: 14px; /* Adjust font size for readability */
+    font-weight: bold; /* Make the text bold */
+    text-decoration: none; /* Remove underline */
+    cursor: pointer; /* Add pointer cursor */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth hover effect */
 }
 
-.nav-link:hover {
-    background-color: #1abc9c;
+.sidebar .nav-link:hover {
+    background-color: #1abc9c; /* Change background color on hover */
+    transform: scale(1.02); /* Slightly enlarge the button on hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
 }
 
 /* User Profile Section */
@@ -60,6 +66,7 @@
     text-align: right;
 }
 
+/* Logout Button */
 .logout-button {
     background-color: #e74c3c;
     color: white;
@@ -75,12 +82,23 @@
     background-color: #c0392b;
 }
 
+/* Reset Button Styles */
+button {
+    all: unset; /* Reset all default styles */
+    display: block; /* Ensure buttons behave like block elements */
+    width: 100%; /* Make buttons fill their container */
+    text-align: center; /* Center the text */
+    cursor: pointer; /* Add a pointer cursor */
+}
+
 /* Main Content Styling */
 .main-content {
-    flex: 1;
+    flex: 1; /* Allow the main content to take up the remaining space */
+    margin-left: 200px; /* Match this to the sidebar width */
     padding: 20px;
-    overflow-y: auto;
-    margin-left: 200px; /* Adjust for fixed sidebar */
+    background-color: #f4f4f4;
+    min-height: 100vh;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 /* Header Styling */
@@ -100,7 +118,7 @@
     color: #555;
 }
 
-/* Card Styling */
+/* Cards Section */
 .card-container {
     display: flex;
     gap: 20px;
@@ -128,6 +146,14 @@
 }
 
 /* Table Styling */
+.table {
+    margin-top: 20px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .records-table {
     width: 100%;
     border-collapse: collapse;
