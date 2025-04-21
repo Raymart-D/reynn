@@ -1,162 +1,164 @@
 import React, { useState } from 'react';
-import './RecordsManagement.css';
+import './ManageRecords.css';
 
-// Define the type for a record
-type Record = {
+type Folder = {
     id: number;
-    memoNo: string;
-    date: string;
-    fileName: string;
-    description: string;
-    status: string;
+    name: string;
+    subfolders: Folder[];
+    documents: string[];
 };
 
 const RecordsManagement: React.FC = () => {
-    const [activeTab, setActiveTab] = useState('All Records');
-    const [records, setRecords] = useState<Record[]>([
-        { id: 1, memoNo: '9', date: '2025', fileName: 'Raymart De Guzman', description: 'Request', status: 'Active' },
-        { id: 2, memoNo: '10', date: '2025', fileName: 'John Doe', description: 'Approval', status: 'Pending' },
+    const [folders, setFolders] = useState<Folder[]>([
+        { id: 1, name: 'Scanned (Inter-office Received)', subfolders: [], documents: [] },
+        { id: 2, name: 'Scanned (Inter-office Released)', subfolders: [], documents: [] },
+        { id: 3, name: 'Scanned (Outgoing)', subfolders: [], documents: [] },
+        { id: 4, name: 'For Notes (Everyday Folder)', subfolders: [], documents: [] },
+        { id: 5, name: 'For Dissemination (Everyday Folder)', subfolders: [], documents: [] },
     ]);
 
-    const [archivedRecords, setArchivedRecords] = useState<Record[]>([]); // Explicitly define the type
-    const [showAddForm, setShowAddForm] = useState(false);
-    const [newRecord, setNewRecord] = useState<Record>({
-        id: 0,
-        memoNo: '',
-        date: '',
-        fileName: '',
-        description: '',
-        status: 'Active',
-    });
+    const [currentFolder, setCurrentFolder] = useState<Folder | null>(null);
 
-    const handleAddRecord = () => {
-        const newId = records.length + 1; // Generate a new unique ID
-        setRecords([...records, { ...newRecord, id: newId }]); // Explicitly set the ID
-        setShowAddForm(false);
-        setNewRecord({ id: 0, memoNo: '', date: '', fileName: '', description: '', status: 'Active' }); // Reset the form
-    };
+    const handleAddFolder = (parentFolder: Folder | null) => {
+        const newFolderName = prompt('Enter the name of the new folder:');
+        if (!newFolderName) {
+            console.log('Folder creation canceled or invalid name entered.');
+            return;
+        }
 
-    const handleArchiveRecord = (id: number) => {
-        const recordToArchive = records.find((record) => record.id === id);
-        if (recordToArchive) {
-            setArchivedRecords([...archivedRecords, recordToArchive]);
-            setRecords(records.filter((record) => record.id !== id));
+        const newFolder: Folder = { id: Date.now(), name: newFolderName, subfolders: [], documents: [] };
+
+        if (parentFolder) {
+            // Add subfolder to the current folder
+            parentFolder.subfolders.push(newFolder);
+            setFolders([...folders]); // Trigger state update
+            console.log(`Added subfolder "${newFolderName}" to folder "${parentFolder.name}"`);
+        } else {
+            // Add folder to the root
+            setFolders([...folders, newFolder]);
+            console.log(`Added new root folder: "${newFolderName}"`);
         }
     };
 
-    const renderRecords = () => {
-        const data = activeTab === 'All Records' ? records : archivedRecords;
-        return (
-            <table className="records-table">
-                <thead>
-                    <tr>
-                        <th>Memo No.</th>
-                        <th>Date</th>
-                        <th>File Name</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                        {activeTab === 'All Records' && <th>Actions</th>}
-                    </tr>
-                </thead>
-                <tbody>
-                    {data.map((record) => (
-                        <tr key={record.id}>
-                            <td>{record.memoNo}</td>
-                            <td>{record.date}</td>
-                            <td>{record.fileName}</td>
-                            <td>{record.description}</td>
-                            <td>{record.status}</td>
-                            {activeTab === 'All Records' && (
-                                <td>
-                                    <button
-                                        className="action-button archive"
-                                        onClick={() => handleArchiveRecord(record.id)}
-                                    >
-                                        Archive
-                                    </button>
-                                </td>
-                            )}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        );
+    const handleRenameFolder = (folder: Folder) => {
+        const newName = prompt('Enter the new name for the folder:', folder.name);
+        if (newName) {
+            const renameFolder = (folders: Folder[]): Folder[] =>
+                folders.map((f) =>
+                    f.id === folder.id
+                        ? { ...f, name: newName }
+                        : { ...f, subfolders: renameFolder(f.subfolders) }
+                );
+            setFolders((prevFolders) => renameFolder(prevFolders));
+        }
     };
 
-    return (
-        <div className="records-management">
-            <header className="records-header">
-                <h1>Records Management</h1>
-            </header>
+    const handleDeleteFolder = (folder: Folder) => {
+        const confirmDelete = window.confirm(`Are you sure you want to delete the folder "${folder.name}"?`);
+        if (confirmDelete) {
+            const deleteFolder = (folders: Folder[]): Folder[] =>
+                folders.filter((f) => f.id !== folder.id).map((f) => ({
+                    ...f,
+                    subfolders: deleteFolder(f.subfolders),
+                }));
+            setFolders((prevFolders) => deleteFolder(prevFolders));
+            setCurrentFolder(null);
+        }
+    };
 
-            {/* Tabs */}
-            <div className="tabs">
-                <button
-                    className={`tab ${activeTab === 'All Records' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('All Records')}
-                >
-                    All Records
-                </button>
-                <button
-                    className={`tab ${activeTab === 'Archived Records' ? 'active' : ''}`}
-                    onClick={() => setActiveTab('Archived Records')}
-                >
-                    Archived Records
-                </button>
-            </div>
+    const handleUploadFile = (folder: Folder) => {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.onchange = (event: Event) => {
+            const target = event.target as HTMLInputElement;
+            if (target.files && target.files.length > 0) {
+                const file = target.files[0];
+                const fileName = file.name;
 
-            {/* Add Record Button */}
-            {activeTab === 'All Records' && (
-                <button className="add-record-button" onClick={() => setShowAddForm(true)}>
-                    Add New Record
+                // Add the file name to the folder's documents array
+                const addFileToFolder = (folders: Folder[]): Folder[] =>
+                    folders.map((f) =>
+                        f.id === folder.id
+                            ? { ...f, documents: [...f.documents, fileName] }
+                            : { ...f, subfolders: addFileToFolder(f.subfolders) }
+                    );
+
+                setFolders((prevFolders) => addFileToFolder(prevFolders));
+                console.log(`Uploaded file "${fileName}" to folder "${folder.name}"`);
+            }
+        };
+        fileInput.click();
+    };
+
+    const openFolder = (folder: Folder) => {
+        setCurrentFolder(folder);
+    };
+
+    const goBack = () => {
+        setCurrentFolder(null);
+    };
+
+    const renderFolderContents = (folder: Folder) => (
+        <div className="folder-contents">
+            <h2>{folder.name}</h2>
+            <button className="add-folder-button" onClick={() => handleAddFolder(folder)}>
+                Add Subfolder
+            </button>
+            <button className="rename-folder-button" onClick={() => handleRenameFolder(folder)}>
+                Rename Folder
+            </button>
+            <button className="delete-folder-button" onClick={() => handleDeleteFolder(folder)}>
+                Delete Folder
+            </button>
+            {/* Only show "Upload File" if the folder has no subfolders */}
+            {folder.subfolders.length === 0 && (
+                <button className="upload-file-button" onClick={() => handleUploadFile(folder)}>
+                    Upload File
                 </button>
             )}
+            <ul className="subfolder-list">
+                {folder.subfolders.map((subfolder) => (
+                    <li key={subfolder.id} className="subfolder-item">
+                        <span onClick={() => openFolder(subfolder)}>📂 {subfolder.name}</span>
+                    </li>
+                ))}
+            </ul>
+            <ul className="document-list">
+                {folder.documents.map((doc, index) => (
+                    <li key={index} className="document-item">
+                        📄 {doc}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 
-            {/* Add Record Form */}
-            {showAddForm && (
-                <div className="add-record-form">
-                    <h3>Add New Record</h3>
-                    <input
-                        type="text"
-                        placeholder="Memo No."
-                        value={newRecord.memoNo}
-                        onChange={(e) => setNewRecord({ ...newRecord, memoNo: e.target.value })}
-                    />
-                    <input
-                        type="text"
-                        placeholder="Date"
-                        value={newRecord.date}
-                        onChange={(e) => setNewRecord({ ...newRecord, date: e.target.value })}
-                    />
-                    <input
-                        type="text"
-                        placeholder="File Name"
-                        value={newRecord.fileName}
-                        onChange={(e) => setNewRecord({ ...newRecord, fileName: e.target.value })}
-                    />
-                    <input
-                        type="text"
-                        placeholder="Description"
-                        value={newRecord.description}
-                        onChange={(e) => setNewRecord({ ...newRecord, description: e.target.value })}
-                    />
-                    <select
-                        value={newRecord.status}
-                        onChange={(e) => setNewRecord({ ...newRecord, status: e.target.value })}
-                    >
-                        <option value="Active">Active</option>
-                        <option value="Pending">Pending</option>
-                    </select>
-                    <button onClick={handleAddRecord}>Save</button>
-                    <button onClick={() => setShowAddForm(false)}>Cancel</button>
+    return (
+        <div className="manage-records">
+            <h1>Records Management</h1>
+            {currentFolder ? (
+                <div>
+                    <button className="go-back-button" onClick={goBack}>
+                        Go Back
+                    </button>
+                    {renderFolderContents(currentFolder)}
+                </div>
+            ) : (
+                <div className="classification">
+                    <h2>Classification of Records</h2>
+                    <div className="classification-cards">
+                        {folders.map((folder) => (
+                            <div key={folder.id} className="classification-card">
+                                <div className="icon">📁</div>
+                                <h3 onClick={() => openFolder(folder)}>{folder.name}</h3>
+                            </div>
+                        ))}
+                    </div>
+                    <button className="add-folder-button" onClick={() => handleAddFolder(null)}>
+                        Add New Folder
+                    </button>
                 </div>
             )}
-
-            {/* Records Table */}
-            <div className="records-table-container">
-                <h2>{activeTab}</h2>
-                {renderRecords()}
-            </div>
         </div>
     );
 };

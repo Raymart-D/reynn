@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import './Dashboard.css';
 import logo from '../assets/logo.png';
 
@@ -26,14 +27,12 @@ const Dashboard: React.FC = () => {
         { id: 6, memoNo: '14', date: '2025-04-06', fileName: 'Charlie Black', description: 'Request', status: 'Unscanned' },
     ]);
 
-    // Filtered records based on search and filter criteria
     const filteredRecords = records.filter((record) => {
         const matchesSearch = record.fileName.toLowerCase().includes(searchTerm.toLowerCase());
         const matchesFilter = filterStatus === 'All' || record.status === filterStatus;
         return matchesSearch && matchesFilter;
     });
 
-    // Pagination logic
     const indexOfLastRecord = currentPage * recordsPerPage;
     const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
     const currentRecords = filteredRecords.slice(indexOfFirstRecord, indexOfLastRecord);
@@ -50,10 +49,18 @@ const Dashboard: React.FC = () => {
             <div className="sidebar">
                 <h2>Dashboard</h2>
                 <nav>
-                    <button className="nav-link">Dashboard</button>
-                    <button className="nav-link">Records Management</button>
-                    <button className="nav-link">Reports</button>
-                    <button className="nav-link">Settings</button>
+                    <Link to="/dashboard">
+                        <button className="nav-link">Dashboard</button>
+                    </Link>
+                    <Link to="/dashboard/records-management">
+                        <button className="nav-link">Records Management</button>
+                    </Link>
+                    <Link to="/dashboard/reports">
+                        <button className="nav-link">Reports</button>
+                    </Link>
+                    <Link to="/dashboard/settings">
+                        <button className="nav-link">Settings</button>
+                    </Link>
                 </nav>
             </div>
 
