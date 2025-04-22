@@ -1,8 +1,20 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const Record = require('./models/Record');
 
 const app = express();
+
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => {
+        console.log('Connected to MongoDB');
+    })
+    .catch((err) => {
+        console.error('Error connecting to MongoDB:', err);
+    });
 
 // Middleware
 app.use(cors());
@@ -13,50 +25,50 @@ app.get('/', (req, res) => {
     res.send('Backend is running!');
 });
 
-// Sample records (in-memory for now)
-let records = [
-    { id: 1, memoNo: '9', date: '2025-04-01', fileName: 'Raymart De Guzman', description: 'Request', status: 'Scanned' },
-    { id: 2, memoNo: '10', date: '2025-04-02', fileName: 'John Doe', description: 'Approval', status: 'Unscanned' },
-    { id: 3, memoNo: '11', date: '2025-04-03', fileName: 'Jane Smith', description: 'Review', status: 'Scanned' },
-];
-
 // GET /records - Fetch all records
-app.get('/records', (req, res) => {
-    res.json(records);
+app.get('/records', async (req, res) => {
+    try {
+        const records = await Record.find();
+        res.json(records);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching records' });
+    }
 });
 
 // POST /records - Add a new record
-app.post('/records', (req, res) => {
-    const newRecord = req.body;
-    newRecord.id = records.length + 1; // Generate a new ID
-    records.push(newRecord);
-    res.status(201).json(newRecord);
+app.post('/records', async (req, res) => {
+    try {
+        const newRecord = new Record(req.body);
+        await newRecord.save();
+        res.status(201).json(newRecord);
+    } catch (error) {
+        res.status(500).json({ message: 'Error adding record' });
+    }
 });
 
 // PUT /records/:id - Update a record
-app.put('/records/:id', (req, res) => {
-    const recordId = parseInt(req.params.id);
-    const updatedRecord = req.body;
-
-    const recordIndex = records.findIndex((record) => record.id === recordId);
-    if (recordIndex !== -1) {
-        records[recordIndex] = { ...records[recordIndex], ...updatedRecord };
-        res.json(records[recordIndex]);
-    } else {
-        res.status(404).json({ message: 'Record not found' });
+app.put('/records/:id', async (req, res) => {
+    try {
+        const updatedRecord = await Record.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!updatedRecord) {
+            return res.status(404).json({ message: 'Record not found' });
+        }
+        res.json(updatedRecord);
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating record' });
     }
 });
 
 // DELETE /records/:id - Delete a record
-app.delete('/records/:id', (req, res) => {
-    const recordId = parseInt(req.params.id);
-    const recordIndex = records.findIndex((record) => record.id === recordId);
-
-    if (recordIndex !== -1) {
-        const deletedRecord = records.splice(recordIndex, 1);
+app.delete('/records/:id', async (req, res) => {
+    try {
+        const deletedRecord = await Record.findByIdAndDelete(req.params.id);
+        if (!deletedRecord) {
+            return res.status(404).json({ message: 'Record not found' });
+        }
         res.json(deletedRecord);
-    } else {
-        res.status(404).json({ message: 'Record not found' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting record' });
     }
 });
 
