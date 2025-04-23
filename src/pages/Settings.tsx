@@ -1,37 +1,41 @@
 import React, { useState } from 'react';
+import './Settings.css';
 
 const Settings: React.FC = () => {
-    const [username, setUsername] = useState('Raymart De Guzman');
-    const [email, setEmail] = useState('raymart@example.com');
+    const [settings, setSettings] = useState({
+        theme: 'Light',
+        notifications: true,
+    });
 
-    const handleSave = () => {
-        alert(`Settings saved for ${username}`);
+    const handleToggleNotifications = () => {
+        setSettings((prev) => ({ ...prev, notifications: !prev.notifications }));
     };
 
     return (
-        <div className="settings">
+        <div>
             <h1>Settings</h1>
-            <form>
-                <div>
-                    <label>Username:</label>
+            <div>
+                <label>
+                    Theme:
+                    <select
+                        value={settings.theme}
+                        onChange={(e) => setSettings({ ...settings, theme: e.target.value })}
+                    >
+                        <option value="Light">Light</option>
+                        <option value="Dark">Dark</option>
+                    </select>
+                </label>
+            </div>
+            <div>
+                <label>
+                    Notifications:
                     <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        type="checkbox"
+                        checked={settings.notifications}
+                        onChange={handleToggleNotifications}
                     />
-                </div>
-                <div>
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </div>
-                <button type="button" onClick={handleSave}>
-                    Save Changes
-                </button>
-            </form>
+                </label>
+            </div>
         </div>
     );
 };

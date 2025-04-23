@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Record = require('./models/Record');
+const Folder = require('./models/Folder'); // Import Folder model
 
 const app = express();
 
@@ -69,6 +70,73 @@ app.delete('/records/:id', async (req, res) => {
         res.json(deletedRecord);
     } catch (error) {
         res.status(500).json({ message: 'Error deleting record' });
+    }
+});
+
+// Folder Routes
+app.post('/folders', async (req, res) => {
+    try {
+        const folder = new Folder(req.body);
+        await folder.save();
+        res.status(201).json(folder);
+    } catch (error) {
+        res.status(500).json({ message: 'Error creating folder' });
+    }
+});
+
+app.get('/folders', async (req, res) => {
+    try {
+        const { parentId } = req.query;
+        const folders = await Folder.find({ parentId: parentId || null });
+        res.json(folders);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching folders' });
+    }
+});
+
+app.put('/folders/:id', async (req, res) => {
+    try {
+        const folder = await Folder.findByIdAndUpdate(req.params.id, { name: req.body.name }, { new: true });
+        if (!folder) return res.status(404).json({ message: 'Folder not found' });
+        res.json(folder);
+    } catch (error) {
+        res.status(500).json({ message: 'Error renaming folder' });
+    }
+});
+
+app.post('/folders/:id/documents', async (req, res) => {
+    try {
+        const folder = await Folder.findById(req.params.id);
+        if (!folder) return res.status(404).json({ message: 'Folder not found' });
+
+        folder.documents.push(req.body); // Add the document to the folder
+        await folder.save();
+        res.status(201).json(folder);
+    } catch (error) {
+        res.status(500).json({ message: 'Error adding document' });
+    }
+});
+
+app.delete('/folders/:folderId/documents/:documentId', async (req, res) => {
+    try {
+        const folder = await Folder.findById(req.params.folderId);
+        if (!folder) return res.status(404).json({ message: 'Folder not found' });
+
+        folder.documents = folder.documents.filter(doc => doc._id.toString() !== req.params.documentId);
+        await folder.save();
+        res.json(folder);
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting document' });
+    }
+});
+
+app.delete('/folders/:id', async (req, res) => {
+    try {
+        const folder = await Folder.findByIdAndDelete(req.params.id);
+        if (!folder) return res.status(404).json({ message: 'Folder not found' });
+        res.json(folder);
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting folder' });
     }
 });
 
