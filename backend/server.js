@@ -3,10 +3,15 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const multer = require('multer'); // Import multer for file uploads
 const Record = require('./models/Record');
 const Folder = require('./models/Folder'); // Import Folder model
 
 const app = express();
+
+// Configure multer for file uploads
+const storage = multer.memoryStorage(); // Store files in memory as a buffer
+const upload = multer({ storage });
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
@@ -94,49 +99,74 @@ app.get('/folders', async (req, res) => {
     }
 });
 
-app.put('/folders/:id', async (req, res) => {
-    try {
-        const folder = await Folder.findByIdAndUpdate(req.params.id, { name: req.body.name }, { new: true });
-        if (!folder) return res.status(404).json({ message: 'Folder not found' });
-        res.json(folder);
-    } catch (error) {
-        res.status(500).json({ message: 'Error renaming folder' });
-    }
-});
-
-app.post('/folders/:id/documents', async (req, res) => {
+app.get('/folders/:id', async (req, res) => {
     try {
         const folder = await Folder.findById(req.params.id);
         if (!folder) return res.status(404).json({ message: 'Folder not found' });
 
-        folder.documents.push(req.body); // Add the document to the folder
+        res.json(folder); // Include the documents array in the response
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching folder' });
+    }
+});
+
+app.put('/folders/:id', async (req, res) => {
+    // Rename a folder
+});
+
+app.post('/folders/:id/documents', upload.single('file'), async (req, res) => {
+    try {
+        const folder = await Folder.findById(req.params.id);
+        if (!folder) return res.status(404).json({ message: 'Folder not found' });
+
+        const document = {
+            name: req.file.originalname, // Use the original file name
+            type: req.file.mimetype,
+            content: req.file.buffer,
+        };
+
+        folder.documents.push(document);
         await folder.save();
-        res.status(201).json(folder);
+
+        res.status(201).json(document); // Return the newly added document
     } catch (error) {
         res.status(500).json({ message: 'Error adding document' });
     }
 });
 
-app.delete('/folders/:folderId/documents/:documentId', async (req, res) => {
+app.get('/folders/:folderId/documents/:documentId', async (req, res) => {
     try {
         const folder = await Folder.findById(req.params.folderId);
         if (!folder) return res.status(404).json({ message: 'Folder not found' });
 
-        folder.documents = folder.documents.filter(doc => doc._id.toString() !== req.params.documentId);
-        await folder.save();
-        res.json(folder);
+        const document = folder.documents.id(req.params.documentId);
+        if (!document) return res.status(404).json({ message: 'Document not found' });
+
+        res.set('Content-Type', document.type);
+        res.send(document.content);
     } catch (error) {
-        res.status(500).json({ message: 'Error deleting document' });
+        res.status(500).json({ message: 'Error fetching document' });
     }
 });
 
-app.delete('/folders/:id', async (req, res) => {
+app.delete('/folders/:folderId/documents/:documentId', async (req, res) => {
+    // Delete a document from a folder
+});
+
+app.put('/folders/:folderId/documents/:documentId', async (req, res) => {
     try {
-        const folder = await Folder.findByIdAndDelete(req.params.id);
+        const folder = await Folder.findById(req.params.folderId);
         if (!folder) return res.status(404).json({ message: 'Folder not found' });
-        res.json(folder);
+
+        const document = folder.documents.id(req.params.documentId);
+        if (!document) return res.status(404).json({ message: 'Document not found' });
+
+        document.name = req.body.name; // Update the document name
+        await folder.save();
+
+        res.json(document); // Return the updated document
     } catch (error) {
-        res.status(500).json({ message: 'Error deleting folder' });
+        res.status(500).json({ message: 'Error renaming document' });
     }
 });
 
