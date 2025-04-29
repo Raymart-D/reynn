@@ -1,8 +1,13 @@
 /* General Styling */
 .records-management {
+    font-family: Arial, sans-serif;
     padding: 20px;
-    font-family: 'Arial', sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
     background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Center-align text */
 }
 
 /* Header Styling */
@@ -17,8 +22,38 @@
     color: #333;
 }
 
+.header {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
 .records-header p {
     font-size: 16px;
+    color: #555;
+}
+
+/* Breadcrumb Styling */
+.breadcrumb {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.breadcrumb-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.breadcrumb-current {
+    font-weight: bold;
     color: #555;
 }
 
@@ -113,31 +148,82 @@
     color: #555;
 }
 
+/* Section Styling */
+.section {
+    margin-bottom: 30px;
+}
+
+/* Folder and Document Lists */
+.folder-list,
+.document-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.folder-item,
+.document-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Centralize text */
+}
+
 /* Action Buttons */
 .action-button {
-    padding: 5px 10px;
+    padding: 5px 10px; /* Adjust padding for a normal button size */
     border: none;
     border-radius: 5px;
-    font-size: 12px;
+    font-size: 14px; /* Slightly larger font for readability */
     cursor: pointer;
     transition: background-color 0.3s;
+    text-align: center; /* Centralize text */
+    display: inline-block; /* Ensure buttons don't stretch */
+    width: auto; /* Let the button size adjust to its content */
+    height: auto; /* Let the height adjust to its content */
 }
 
 .action-button.view {
-    background-color: #3498db;
-    color: white;
-}
-
-.action-button.edit {
-    background-color: #f1c40f;
-    color: white;
-}
-
-.action-button.archive {
     background-color: #e74c3c;
     color: white;
 }
 
+.action-button.delete {
+    background-color: #d9534f;
+    color: white;
+}
+
+.action-button.upload {
+    background-color: #f39c12;
+    color: white;
+}
+
+.action-button.create {
+    background-color: #1abc9c;
+    color: white;
+}
+
 .action-button:hover {
-    opacity: 0.8;
+    opacity: 0.9;
+}
+
+/* Create Folder and Upload File */
+.create-folder,
+.upload-file {
+    margin-top: 20px;
+}
+
+.folder-input,
+.file-input {
+    padding: 5px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }

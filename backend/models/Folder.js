@@ -1,18 +1,15 @@
-// filepath: /workspaces/reynn/backend/models/Folder.js
 const mongoose = require('mongoose');
 
-const DocumentSchema = new mongoose.Schema({
+const documentSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    type: { type: String, required: true }, // e.g., PDF, DOCX
-    content: { type: Buffer }, // Optional: Store file content
+    type: { type: String, required: true },
+    content: { type: Buffer, required: true },
 });
 
-const FolderSchema = new mongoose.Schema({
+const folderSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    parentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Folder', default: null }, // Reference to parent folder
-    documents: [DocumentSchema], // Array of documents
+    parentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Folder', default: null },
+    documents: [documentSchema], // Array of subdocuments
 });
 
-const Folder = mongoose.model('Folder', FolderSchema);
-
-module.exports = Folder;
+module.exports = mongoose.model('Folder', folderSchema);

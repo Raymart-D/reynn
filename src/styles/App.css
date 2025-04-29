@@ -1,0 +1,15 @@
+.app {
+    display: flex;
+}
+
+.sidebar {
+    flex: 0 0 250px;
+}
+
+.content {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}

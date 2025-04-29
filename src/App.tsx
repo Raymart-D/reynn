@@ -1,21 +1,27 @@
-// filepath: /workspaces/reynn/src/App.tsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
-import RecordsManagement from './pages/RecordsManagement';
-import Reports from './pages/Reports';
+import Records from './pages/Records';
+import RecordTypes from './pages/RecordTypes';
+import Scanner from './pages/Scanner';
 import Settings from './pages/Settings';
 
 const App: React.FC = () => {
     return (
         <Router>
-            <Routes>
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/records-management" element={<RecordsManagement />} />
-                <Route path="/reports" element={<Reports />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/" element={<Dashboard />} /> {/* Default route */}
-            </Routes>
+            <div className="app">
+                <Sidebar />
+                <div className="content">
+                    <Routes>
+                        <Route path="/" element={<Dashboard />} />
+                        <Route path="/records" element={<Records />} />
+                        <Route path="/record-types" element={<RecordTypes />} />
+                        <Route path="/scanner" element={<Scanner />} />
+                        <Route path="/settings" element={<Settings />} />
+                    </Routes>
+                </div>
+            </div>
         </Router>
     );
 };
